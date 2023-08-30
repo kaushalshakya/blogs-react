@@ -1,12 +1,17 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
+  const API = import.meta.env.VITE_API_URL;
+  console.log(API + '/posts');
   return (
     <>
-      <h1 className="text-9xl font-bold underline">
-      Hello world!
-    </h1>
+      <Router>
+        <Routes>
+          <Route path="/" />
+        </Routes>
+      </Router>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
