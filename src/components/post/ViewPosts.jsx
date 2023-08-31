@@ -30,7 +30,7 @@ const ViewPosts = () => {
         const postList = posts.response;
         const orderedList = postList.slice().sort((a,b) => b.post_added.localeCompare(a.post_added));
         content = orderedList.map(post => (
-            <article className = "max-w-[50rem] rounded-2xl bg-[#273235] min-w-[50rem] p-4 space-y-4" key = {post.id}>
+            <article className = "max-w-[50rem] rounded-2xl bg-[#273235] min-w-[50rem] p-4 m-4 space-y-4" key = {post.id}>
                 <h1 className = "text-2xl font-bold">{post.post_title}</h1>
                 <p>{post.post_content}</p>
                 <img src={post.post_image} className="w-full rounded-2xl" alt="" /> 
