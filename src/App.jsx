@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ViewPosts from "./components/post/ViewPosts";
 
 function App() {
   const API = import.meta.env.VITE_API_URL;
@@ -7,7 +8,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="/" />
+          <Route path="/" Component={ViewPosts} />
         </Routes>
       </Router>
     </>
