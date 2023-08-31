@@ -3,7 +3,7 @@ import ViewPosts from "./components/post/ViewPosts";
 
 function App() {
   return (
-    <div className="bg-default text-default">
+    <div className="min-h-screen bg-default text-default">
       <Router>
         <Routes>
           <Route path="/" Component={ViewPosts} />

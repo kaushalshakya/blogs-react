@@ -30,11 +30,11 @@ const ViewPosts = () => {
         const postList = posts.response;
         const orderedList = postList.slice().sort((a,b) => b.post_added.localeCompare(a.post_added));
         content = orderedList.map(post => (
-            <article className = "max-w-[50rem] rounded-2xl bg-[#273235] min-w-[50rem] p-3" key = {post.id}>
-                <h1>{post.post_title}</h1>
-                <h3>{post.post_content}</h3>
+            <article className = "max-w-[50rem] rounded-2xl bg-[#273235] min-w-[50rem] p-4 space-y-4" key = {post.id}>
+                <h1 className = "text-2xl font-bold">{post.post_title}</h1>
+                <p>{post.post_content}</p>
                 <img src={post.post_image} className="w-full rounded-2xl" alt="" /> 
-                <section className="flex items-center gap-2 m-2 justify-end"><AuthorImage post={post}/> <i>{post.first_name} {post.last_name}</i></section>
+                <section className="flex items-center gap-2 m-2 justify-end">{post.image && <AuthorImage post={post}/>}<i>{post.first_name} {post.last_name}</i></section>
             </article>
         ))
     }
@@ -45,7 +45,7 @@ const ViewPosts = () => {
   return (
     <>
         <div className="flex flex-col items-center gap-4 justify-center">
-            <h1 className="text-xl">{posts.message}</h1>
+            <h1 className="text-2xl font-black">{posts.message}</h1>
             {content}
         </div>
     </>
