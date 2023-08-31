@@ -12,6 +12,7 @@ export const getPosts = createAsyncThunk('posts/getPosts', async () => {
 
         response.data.response.forEach(post => {
             post.post_image = post.post_image ? IMAGE + 'post-img/' + post.post_image : null;
+            post.image = post.image ? IMAGE + 'profile-img/' + post.image : null;
         });
 
         console.log('test', response.data.response);
