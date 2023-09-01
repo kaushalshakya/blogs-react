@@ -25,17 +25,23 @@ const ViewPosts = () => {
     var content;
 
     if(status === 'idle') {
-        content = <p>Loading... </p>
+        content = <p className="flex items-center justify-center h-screen">Loading...</p>
     } else if (status === 'succeeded') {
         const postList = posts.response;
         const orderedList = postList.slice().sort((a,b) => b.post_added.localeCompare(a.post_added));
         content = orderedList.map(post => (
-            <article className = "max-w-[50rem] rounded-2xl bg-[#273235] min-w-[50rem] p-4 m-4 space-y-4" key = {post.id}>
-                <h1 className = "text-2xl font-bold">{post.post_title}</h1>
-                <p>{post.post_content}</p>
-                <img src={post.post_image} className="w-full rounded-2xl" alt="" /> 
-                <section className="flex items-center gap-2 m-2 justify-end">{post.image && <AuthorImage post={post}/>}<i>{post.first_name} {post.last_name}</i></section>
-            </article>
+            <div className="card w-[700px]  bg-base-100 shadow-xl">
+            {post.post_image && <figure><img src={post.post_image} alt="Post image" /></figure>}
+            <div className="card-body">
+              <h2 className="card-title">
+                {post.post_title}
+              </h2>
+              <p>{post.post_content}</p>
+              <div className="card-actions justify-end">
+                <div className="badge badge-outline">{post.first_name} {post.last_name}</div>
+              </div>
+            </div>
+          </div>
         ))
     }
     else if(status === 'error'){
