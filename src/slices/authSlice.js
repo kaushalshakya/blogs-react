@@ -6,12 +6,20 @@ const API = import.meta.env.VITE_API_URL;
 
 export const loginThunk = createAsyncThunk('auth/loginThunk', async(payload, thukAPI) => {
     try{
-        console.log('payload', payload);
-        console.log('API + login', API + 'login');
         const response = await axios.post(API + 'login', payload);
         return response.data;
     } catch (err) {
         return thukAPI.rejectWithValue(err.response.data);
+    }
+})
+
+export const logoutThunk = createAsyncThunk('auth/logoutThunk', async(thunkAPI) => {
+    try{
+        const response = await axios.post(API + 'logout');
+        console.log(response.data);
+        return response.data;
+    }catch(err) {
+        return thunkAPI.rejectWithValue(err.response.data);
     }
 })
 
