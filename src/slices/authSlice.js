@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -34,9 +35,9 @@ const authSlice = createSlice(
                     console.log('succeeded', action.payload);
                     state.token = action.payload.accessToken;
                     console.log(state.token);
+                    const user = jwtDecode(action.payload.accessToken);
+                    console.log(user);
                     state.success = action.payload;
-                    // state.user = action.payload;
-                    // state.token = action.payload
                 })
                 .addCase(loginThunk.rejected, (state, action) => {
                     state.status = 'rejected';

@@ -3,10 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginThunk, getError, getMessage } from '../../slices/authSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
 
@@ -36,7 +39,7 @@ const LoginForm = () => {
         if(success) {
             toast.success(success.message, {
                 position: "top-right",
-                autoClose: 5000,
+                autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -44,6 +47,10 @@ const LoginForm = () => {
                 progress: undefined,
                 theme: "dark",
             });
+
+            setTimeout(() => {
+                navigate('/');
+            }, 3000);
         }
     }, [success]);
     
