@@ -7,15 +7,15 @@ import 'react-toastify/dist/ReactToastify.css';
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [alert, setAlert] = useState(false);
 
     const dispatch = useDispatch();
 
-    const error = useSelector(getError);
-    // console.log('selector error', error);
-
     const success = useSelector(getMessage);
     console.log('success msg', success);
+
+
+    const error = useSelector(getError);
+    console.log('error msg', error);
 
     useEffect(() => {
         if (error) {
@@ -31,22 +31,8 @@ const LoginForm = () => {
             });
         }
     }, [error]);
-    
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if(!email.length || !password.length) {
-            setAlert(true);
-        } else{
-            setAlert(false);
-        }
-        const payload = {
-            email: email,
-            password: password
-        }
-
-        dispatch(loginThunk(payload));
-
+    useEffect(() => {
         if(success) {
             toast.success(success.message, {
                 position: "top-right",
@@ -57,8 +43,20 @@ const LoginForm = () => {
                 draggable: true,
                 progress: undefined,
                 theme: "dark",
-            })
+            });
         }
+    }, [success]);
+    
+
+    const handleSubmit = (e) => {
+        
+        e.preventDefault();
+        const payload = {
+            email: email,
+            password: password
+        }
+
+        dispatch(loginThunk(payload));
     }
 
     const handleKeyDown = (e) => {
@@ -77,7 +75,7 @@ const LoginForm = () => {
             </div>
             <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                 <div className="card-body">
-                    <form action="">
+                    <form action="" method='POST'>
                     <div className="form-control">
                         <label className="label">
                             <span className="label-text">Email</span>
@@ -95,10 +93,6 @@ const LoginForm = () => {
                     <ToastContainer />
                 </div>
                 </form>
-                {alert && <div className="alert alert-error">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                        <span>Credentials not provided</span>
-                </div>}
                 </div>
             </div>
         </div>

@@ -18,7 +18,8 @@ const initialState = {
     token: null,
     status: 'idle',
     error: null,
-    success: null
+    success: null,
+    payload: null
 }
 
 const authSlice = createSlice(
@@ -31,7 +32,9 @@ const authSlice = createSlice(
                 .addCase(loginThunk.fulfilled, (state, action) => {
                     state.status = 'succeeded';
                     console.log('succeeded', action.payload);
-                    state.success = action.payload
+                    state.token = action.payload.accessToken;
+                    console.log(state.token);
+                    state.success = action.payload;
                     // state.user = action.payload;
                     // state.token = action.payload
                 })
