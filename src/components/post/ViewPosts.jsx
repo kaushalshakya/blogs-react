@@ -9,6 +9,7 @@ import AuthorImage from "./AuthorImage";
 
 import React from 'react'
 import { useEffect } from "react";
+import Loader from "../Loader";
 
 const ViewPosts = () => {
     const dispatch = useDispatch();
@@ -25,7 +26,8 @@ const ViewPosts = () => {
     var content;
 
     if(status === 'idle') {
-        content = <p className="flex items-center justify-center h-screen">Loading...</p>
+        content = <Loader />
+
     } else if (status === 'succeeded') {
         const postList = posts.response;
         const orderedList = postList.slice().sort((a,b) => b.post_added.localeCompare(a.post_added));
@@ -38,7 +40,7 @@ const ViewPosts = () => {
               </h2>
               <p>{post.post_content}</p>
               <div className="card-actions justify-end">
-                <div className="badge badge-outline">{post.first_name} {post.last_name}</div>
+                <div className="badge badge-outline p-2">{post.first_name} {post.last_name}</div>
               </div>
             </div>
           </div>
@@ -50,10 +52,13 @@ const ViewPosts = () => {
 
   return (
     <>
-        <div className="flex flex-col items-center gap-4 justify-center">
-            <h1 className="text-2xl font-black">{posts.message}</h1>
-            {content}
-        </div>
+        {(status !== 'idle') ?
+            <div className="flex flex-col items-center gap-4 justify-center">
+                <h1 className="text-2xl font-black">{posts.message}</h1>
+                {content}
+            </div> :
+            content
+        }
     </>
   )
 }
