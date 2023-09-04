@@ -20,7 +20,7 @@ const initialState = {
     status: 'idle',
     error: null,
     success: null,
-    payload: null
+    user: null
 }
 
 const authSlice = createSlice(
@@ -32,16 +32,13 @@ const authSlice = createSlice(
             builder
                 .addCase(loginThunk.fulfilled, (state, action) => {
                     state.status = 'succeeded';
-                    console.log('succeeded', action.payload);
                     state.token = action.payload.accessToken;
-                    console.log(state.token);
                     const user = jwtDecode(action.payload.accessToken);
-                    console.log(user);
+                    state.user = user;
                     state.success = action.payload;
                 })
                 .addCase(loginThunk.rejected, (state, action) => {
                     state.status = 'rejected';
-                    console.log('rejected', action.payload);
                     const error = action.payload || 'Unkown error';
                     // console.log('err', error);
                     state.error = error; 
@@ -60,6 +57,10 @@ export const getError = (state) => {
 
 export const getMessage = (state) => {
     return state.auth.success;
+}
+
+export const getUser = (state) => {
+    return state.auth.user;
 }
 
 export const selectToken = (state) => state.auth.token;

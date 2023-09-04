@@ -1,18 +1,29 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ViewPosts from "./components/post/ViewPosts";
-import LoginForm from "./components/auth/LoginForm";
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import ViewPosts from './components/post/ViewPosts';
+import LoginForm from './components/auth/LoginForm';
+import Navbar from './components/Navbar';
 
-function App() {
+export default function App() {
   return (
     <div data-theme="dark">
       <Router>
+        <ConditionalNavbar />
         <Routes>
-          <Route path="/" Component={ViewPosts} />
-          <Route path="/login" Component={LoginForm} />
+          <Route path="/login" element={<LoginForm />} />
+          <Route path="/" element={<ViewPosts />} />
         </Routes>
       </Router>
     </div>
   );
 }
 
-export default App;
+function ConditionalNavbar() {
+  let location = useLocation();
+  
+  // Do not show the Navbar when the path is '/login'
+  if (location.pathname === '/login') {
+    return null;
+  }
+  
+  return <Navbar />;
+}

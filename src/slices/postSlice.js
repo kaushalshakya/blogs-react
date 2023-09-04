@@ -17,7 +17,6 @@ export const getPosts = createAsyncThunk('posts/getPosts', async () => {
 
         console.log('test', response.data.response);
         console.log('resposne data', response.data);
-        // return false;
 
         return response.data;
     }catch (err) {
