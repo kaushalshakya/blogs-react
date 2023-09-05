@@ -59,7 +59,7 @@ const Navbar = () => {
         <div className="navbar-center">
             {user ? 
             <>
-               {user.image && <h1 className="btn btn-ghost normal-case text-xl"><img className='w-10 rounded-full' src={import.meta.env.VITE_IMAGE_URL + 'profile-img/' + user.image} alt="" />  {user.first_name + ' ' + user.last_name}</h1>}
+               {user && <h1 className="btn btn-ghost normal-case text-xl"> {user.image && <img className='w-10 rounded-full' src={import.meta.env.VITE_IMAGE_URL + 'profile-img/' + user.image} alt="" />}  {user.first_name + ' ' + user.last_name}</h1>}
             </> : 
             <h1 className="btn btn-ghost normal-case text-xl">Welcome user!</h1>}
         </div>

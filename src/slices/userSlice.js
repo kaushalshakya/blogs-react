@@ -14,9 +14,9 @@ export const registerThunk = createAsyncThunk('users/registerThunk', async(paylo
 })
 
 const initialState = {
-    state: 'idle',
+    status: 'idle',
     error: null,
-    success: false
+    success: null
 }
 
 const userSlice = createSlice(
@@ -27,13 +27,19 @@ const userSlice = createSlice(
         extraReducers : (builder) => {
             builder
                 .addCase(registerThunk.fulfilled, (state, action) => {
-
+                    state.status = 'succeeded';
+                    state.success = action.payload;
                 })
                 .addCase(registerThunk.rejected, (state, action) => {
-
+                    state.status = 'rejected';
+                    error = action.payload;
                 })
         }
     }
 )
 
 export default userSlice.reducer;
+
+export const getSuccess = (state) => state.user.success;
+
+export const getError = (state) => state.user.error;

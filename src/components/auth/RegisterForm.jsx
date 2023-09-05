@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { registerThunk } from '../../slices/userSlice';
+import { getSuccess, registerThunk } from '../../slices/userSlice';
+import { getError } from '../../slices/authSlice';
 
 const RegisterForm = () => {
     const [firstName, setFirstName] = useState('');
@@ -13,13 +14,46 @@ const RegisterForm = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [image, setImage] = useState(null);
 
+    const success = useSelector(getSuccess);
+    const error = useSelector(getError);
+
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error.message, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+        }
+    }, [error]);
+
+    useEffect(() => {
+        if(success) {
+            toast.success(success.message, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            })
+        }
+    })
 
     const handleRegister = () => {
         if(!firstName || !lastName || !email || !password || !confirmPassword) {
             return toast.error('All necessary fields are not provided', {
                 position: "top-right",
-                autoClose: 5000,
+                autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: false,
@@ -33,7 +67,7 @@ const RegisterForm = () => {
         if(!emailPattern.test(email)){
             return toast.error('Email address is not valid', {
                 position: "top-right",
-                autoClose: 5000,
+                autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: false,
@@ -51,6 +85,8 @@ const RegisterForm = () => {
             confirmPassword: confirmPassword,
             image: image
         }
+
+        dispatch(registerThunk(payload));
     }
 
     const handleKeyDown = (e) => {
