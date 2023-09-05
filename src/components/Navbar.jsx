@@ -63,8 +63,9 @@ const Navbar = () => {
             </> : 
             <h1 className="btn btn-ghost normal-case text-xl">Welcome user!</h1>}
         </div>
-        <div className="navbar-end">
-            {user ? <button className="btn btn-primary" onClick={handleLogout}>Logout</button> : <Link to={'/login'}><button className="btn btn-primary" type='button'>Login</button></Link> }
+        <div className="flex gap-3 navbar-end">
+            {user ? <button className="btn btn-ghost normal-case" onClick={handleLogout}>Logout</button> : <Link to={'/login'}><button className="btn btn-ghost normal-case" type='button'>Login</button></Link> }
+            {!user && <Link to={'/register'}><button className="btn btn-ghost normal-case" type='button'>Register</button></Link>}
         </div>
     </div>
     {logout && (

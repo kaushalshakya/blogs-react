@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginThunk, getError, getMessage, getUser } from '../../slices/authSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
@@ -95,6 +95,11 @@ const LoginForm = () => {
                             <span className="label-text">Password</span>
                         </label>
                         <input type = 'password' value={password} name = 'password' className="input input-bordered w-full max-w-xs" placeholder = '********' onChange={(e) => setPassword(e.target.value)} required/>
+                        <label className="label">
+                            <p className="label-text-alt">
+                                Don't have an account? Click <span className='link link-hover'><Link to={'/register'}>here</Link></span> to register
+                            </p>
+                        </label>
                 </div>
                 <div className="form-control mt-6">
                     <button className="btn btn-primary" onClick={handleSubmit} onKeyDown={handleKeyDown} tabIndex='0'>Login</button>

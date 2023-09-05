@@ -14,9 +14,14 @@ export const loginThunk = createAsyncThunk('auth/loginThunk', async(payload, thu
 })
 
 export const logoutThunk = createAsyncThunk('auth/logoutThunk', async(id, thunkAPI) => {
+    const state = thunkAPI.getState();
     try{
         console.log('here');
-        const response = await axios.post(API + 'logout', id);
+        const response = await axios.post(API + 'logout', id, {
+            headers : {
+                'Authorization': `Bearer ${state.auth.token}`
+            }
+        });
         console.log(response.data);
         return response.data;
     }catch(err) {

@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import ViewPosts from './components/post/ViewPosts';
 import LoginForm from './components/auth/LoginForm';
 import Navbar from './components/Navbar';
+import RegisterForm from './components/auth/RegisterForm';
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<LoginForm />} />
           <Route path="/" element={<ViewPosts />} />
+          <Route path='/register' element = {<RegisterForm />} />
         </Routes>
       </Router>
     </div>
@@ -20,8 +22,8 @@ export default function App() {
 function ConditionalNavbar() {
   let location = useLocation();
   
-  // Do not show the Navbar when the path is '/login'
-  if (location.pathname === '/login') {
+  // Do not show the Navbar when the path is '/login' or '/register'
+  if (location.pathname === '/login' || location.pathname === '/register') {
     return null;
   }
   
