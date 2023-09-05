@@ -1,19 +1,44 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { getUser } from '../slices/authSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUser, logoutMessage } from '../slices/authSlice';
 import { Link } from 'react-router-dom';
+import { logoutThunk } from '../slices/authSlice';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Navbar = () => {
+    const dispatch = useDispatch();
     const [logout, setLogout] = useState(false);
     const user = useSelector(getUser);
+    const success = useSelector(logoutMessage);
+
+    console.log('user', user);
+    console.log('logout', success);
 
     const handleLogout = (e) => {
         e.preventDefault();
         return setLogout(true);
     }
 
-    const confirmLogout = () => {
+    const confirmLogout = async() => {
+      try{
+        dispatch(logoutThunk(user.id)).unwrap();
+
+        toast.success('Logged out successfully!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+
         return setLogout(false);
+      } catch(err) {
+        console.log(err);
+      }
     }
 
     const cancelLogout = () => {
@@ -43,6 +68,7 @@ const Navbar = () => {
         </div>
     </div>
     {logout && (
+        <>
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="modal modal-open">
             <div className="modal-box">
@@ -55,6 +81,8 @@ const Navbar = () => {
             </div>
           </div>
         </div>
+        <ToastContainer />
+        </>
       )}
     </>
   )

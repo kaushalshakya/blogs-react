@@ -13,13 +13,14 @@ export const loginThunk = createAsyncThunk('auth/loginThunk', async(payload, thu
     }
 })
 
-export const logoutThunk = createAsyncThunk('auth/logoutThunk', async(thunkAPI) => {
+export const logoutThunk = createAsyncThunk('auth/logoutThunk', async(id, thunkAPI) => {
     try{
-        const response = await axios.post(API + 'logout');
+        console.log('here');
+        const response = await axios.post(API + 'logout', id);
         console.log(response.data);
         return response.data;
     }catch(err) {
-        return thunkAPI.rejectWithValue(err.response.data);
+        return console.log(err);
     }
 })
 
@@ -28,7 +29,8 @@ const initialState = {
     status: 'idle',
     error: null,
     success: null,
-    user: null
+    user: null,
+    logoutMessage: null
 }
 
 const authSlice = createSlice(
@@ -47,16 +49,26 @@ const authSlice = createSlice(
                 })
                 .addCase(loginThunk.rejected, (state, action) => {
                     state.status = 'rejected';
-                    const error = action.payload || 'Unkown error';
+                    const error = action.payload || 'Unknown error';
                     // console.log('err', error);
                     state.error = error; 
                     // console.log('state-err', state.error);
                 })
+                .addCase(logoutThunk.fulfilled, (state, action) => {
+                    state.status = 'succeeded';
+                    state.user = null;
+                    state.logoutMessage = action.payload;
+                    state.token = null;
+                    state.success = null;
+                })
+                .addCase(logoutThunk.rejected, (state, action) => {
+                    state.status = 'rejected';
+                    const error = action.payload || 'Unknown error';
+                    state.error = error
+                })
         }
     }
 )
-
-export const { setCredentials, logOut } = authSlice.actions;
 export default authSlice.reducer;
 
 export const getError = (state) => {
@@ -69,6 +81,10 @@ export const getMessage = (state) => {
 
 export const getUser = (state) => {
     return state.auth.user;
+}
+
+export const logoutMessage = (state) => {
+    return state.auth.logoutMessage;
 }
 
 export const selectToken = (state) => state.auth.token;

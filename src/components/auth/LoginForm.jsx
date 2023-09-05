@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginThunk, getError, getMessage } from '../../slices/authSlice';
+import { loginThunk, getError, getMessage, getUser } from '../../slices/authSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +16,7 @@ const LoginForm = () => {
     const success = useSelector(getMessage);
     console.log('success msg', success);
 
+    const user = useSelector(getUser);
 
     const error = useSelector(getError);
     console.log('error msg', error);
@@ -39,7 +40,7 @@ const LoginForm = () => {
         if(success) {
             toast.success(success.message, {
                 position: "top-right",
-                autoClose: 3000,
+                autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -50,7 +51,7 @@ const LoginForm = () => {
 
             setTimeout(() => {
                 navigate('/');
-            }, 3000);
+            }, 2000);
         }
     }, [success]);
     
@@ -74,7 +75,7 @@ const LoginForm = () => {
     }
 
   return (
-    <div className="hero min-h-screen bg-base-200">
+    !user && <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row-reverse">
             <div className="text-center lg:text-left">
                 <h1 className="text-5xl font-bold">Login now!</h1>
