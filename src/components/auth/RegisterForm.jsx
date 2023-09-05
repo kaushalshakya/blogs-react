@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { getSuccess, registerThunk } from '../../slices/userSlice';
+import { getSuccess, registerThunk, resetSuccess } from '../../slices/userSlice';
 import { getError } from '../../slices/authSlice';
 
 const RegisterForm = () => {
@@ -13,11 +13,12 @@ const RegisterForm = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [image, setImage] = useState(null);
-
+    
     const success = useSelector(getSuccess);
     const error = useSelector(getError);
-
+    
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (error) {
@@ -46,8 +47,12 @@ const RegisterForm = () => {
                 progress: undefined,
                 theme: "dark",
             })
+            setTimeout(() => {
+                dispatch(resetSuccess());
+                navigate('/login');
+            }, 2100);
         }
-    })
+    }, [success, dispatch])
 
     const handleRegister = () => {
         if(!firstName || !lastName || !email || !password || !confirmPassword) {

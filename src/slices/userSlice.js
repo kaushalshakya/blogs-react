@@ -23,7 +23,11 @@ const userSlice = createSlice(
     {
         name: 'user',
         initialState,
-        reducers: {},
+        reducers: {
+            resetSuccess : (state, action) => {
+                state.success = null;
+            }
+        },
         extraReducers : (builder) => {
             builder
                 .addCase(registerThunk.fulfilled, (state, action) => {
@@ -32,7 +36,7 @@ const userSlice = createSlice(
                 })
                 .addCase(registerThunk.rejected, (state, action) => {
                     state.status = 'rejected';
-                    error = action.payload;
+                    state.error = action.payload;
                 })
         }
     }
@@ -43,3 +47,5 @@ export default userSlice.reducer;
 export const getSuccess = (state) => state.user.success;
 
 export const getError = (state) => state.user.error;
+
+export const { resetSuccess } = userSlice.actions;
