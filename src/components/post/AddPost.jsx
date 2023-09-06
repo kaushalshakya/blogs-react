@@ -83,7 +83,7 @@ const AddPost = () => {
                             <label className="label">
                                 <span className="label-text">Content</span>
                             </label>
-                            <input type="text" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Your post body here" className="input input-bordered" />
+                            <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Your post body here" className="textarea textarea-bordered" />
                         </div>
                         <div className="form-control">
                             <label className="label">
