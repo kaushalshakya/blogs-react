@@ -75,7 +75,7 @@ const postSlice = createSlice (
                 .addCase(addPosts.fulfilled, (state, action) => {
                     state.status = 'succeeded';
                     state.success = action.payload;
-                    console.log('state.posts', state.posts);
+                    console.log('state.success', state.success);
                     // state.posts.push(action.payload);
                 })
                 .addCase(addPosts.rejected, (state, action) => {

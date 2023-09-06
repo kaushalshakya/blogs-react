@@ -17,15 +17,9 @@ const ViewPosts = () => {
     const status = useSelector(postStatus);
     const error = useSelector(postError);
 
-    const user = useSelector(getUser);
-
-    console.log(user);
-
     useEffect(() => {
-        if(status === 'idle') {
-            dispatch(getPosts());
-        }
-    }, [status, dispatch]);
+      dispatch(getPosts());
+    }, []);
 
     var content;
 
@@ -34,8 +28,8 @@ const ViewPosts = () => {
 
     } else if (status === 'succeeded') {
         const postList = posts.response;
-        const orderedList = postList.slice().sort((a,b) => b.post_added.localeCompare(a.post_added));
-        content = orderedList.map(post => (
+        const orderedList = postList && postList.slice().sort((a,b) => b.post_added.localeCompare(a.post_added));
+        content = postList ? orderedList.map(post => (
             <div className="card w-[1000px]  bg-base-100 shadow-xl">
             {post.post_image && <figure><img src={post.post_image} alt="Post image" /></figure>}
             <div className="card-body">
@@ -48,7 +42,16 @@ const ViewPosts = () => {
               </div>
             </div>
           </div>
-        ))
+        )) : 
+        <div className="hero min-h-screen bg-base-200">
+          <div className="hero-content text-center">
+            <div className="max-w-md">
+              <h1 className="text-5xl font-bold">Hello there</h1>
+              <p className="py-6">There are currently no posts. Be the first poster by signing up!</p>
+              <Link><button className="btn btn-primary">Sign Up</button></Link>
+            </div>
+          </div>
+        </div>
     }
     else if(status === 'error'){
         content = <p>{error}</p>
