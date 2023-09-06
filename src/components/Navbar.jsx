@@ -22,7 +22,7 @@ const Navbar = () => {
 
     const confirmLogout = async() => {
       try{
-        dispatch(logoutThunk(user.id)).unwrap();
+        dispatch(logoutThunk(user.id));
 
         toast.success('Logged out successfully!', {
           position: "top-right",
@@ -64,7 +64,11 @@ const Navbar = () => {
             <h1 className="btn btn-ghost normal-case text-xl">Welcome user!</h1>}
         </div>
         <div className="flex gap-3 navbar-end">
-            {user ? <button className="btn btn-ghost normal-case" onClick={handleLogout}>Logout</button> : <Link to={'/login'}><button className="btn btn-ghost normal-case" type='button'>Login</button></Link> }
+            {user ? 
+            <>
+              <Link to={'/post'}><button className='btn btn-primary normal-case'>Add Post</button></Link>
+              <button className="btn btn-ghost normal-case" onClick={handleLogout}>Logout</button>
+            </> : <Link to={'/login'}><button className="btn btn-ghost normal-case" type='button'>Login</button></Link> }
             {!user && <Link to={'/register'}><button className="btn btn-ghost normal-case" type='button'>Register</button></Link>}
         </div>
     </div>

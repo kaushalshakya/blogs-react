@@ -24,6 +24,16 @@ export const getPosts = createAsyncThunk('posts/getPosts', async () => {
     }
 })
 
+const addPosts = createAsyncThunk('posts/addPosts', async(payload, thunkAPI) => {
+    try{
+        const response = await axios.post(API + 'posts', payload);
+        console.log(response.data);
+        return response.data;
+    }catch(err) {
+        return thunkAPI.rejectWithValue(response.data);
+    }
+})
+
 const initialState = {
     posts: [],
     status: 'idle',

@@ -53,7 +53,7 @@ const LoginForm = () => {
                 navigate('/');
             }, 2000);
         }
-    }, [success]);
+    }, [success, dispatch]);
     
 
     const handleSubmit = (e) => {

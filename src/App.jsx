@@ -3,6 +3,7 @@ import ViewPosts from './components/post/ViewPosts';
 import LoginForm from './components/auth/LoginForm';
 import Navbar from './components/Navbar';
 import RegisterForm from './components/auth/RegisterForm';
+import AddPost from './components/post/AddPost';
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/" element={<ViewPosts />} />
           <Route path='/register' element = {<RegisterForm />} />
+          <Route path='/post' element = {<AddPost />} />
         </Routes>
       </Router>
     </div>
