@@ -92,4 +92,8 @@ export const logoutMessage = (state) => {
     return state.auth.logoutMessage;
 }
 
+export const getToken = (state) => {
+    return state.auth.token;
+}
+
 export const selectToken = (state) => state.auth.token;

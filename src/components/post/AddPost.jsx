@@ -1,14 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPosts, postSuccess } from '../../slices/postSlice';
+import { resetSuccess } from '../../slices/postSlice';
+import { useNavigate } from 'react-router-dom';
 
 const AddPost = () => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [image, setImage] = useState(null);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const success = useSelector(postSuccess);
+
 
     const handleSubmit = () => {
-        console.log('Submit');
+        console.log('Image', image);
         if(!title && !content && !image ){
             return toast.error('Your post cannot be empty', {
                 position: "top-right",
@@ -21,7 +30,34 @@ const AddPost = () => {
                 theme: "dark",
             })
         } 
+
+        const payload = {
+            post_title: title,
+            post_content: content,
+            post_image: image
+        }
+
+        dispatch(addPosts(payload));
     }
+
+    useEffect(() => {
+        if(success) {
+            toast.success(success.message, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            })
+            setTimeout(() => {
+                dispatch(resetSuccess());
+                navigate('/');
+            }, 2500);
+        }
+    }, [success, dispatch])
 
     const handleKeyDown = (e) => {
         if(e.key === 'Enter') { 
@@ -55,7 +91,7 @@ const AddPost = () => {
                             <label className="label">
                                 <span className="label-text">Image</span>
                             </label>
-                            <input type="file" value={image} onChange={(e) => setImage(e.target.value)} className="file-input w-full max-w-xs" />
+                            <input type="file" onChange={(e) => setImage(e.target.files[0])} className="file-input w-full max-w-xs" />
                         </div>
                         <div className="form-control mt-6">
                             <button className="btn btn-primary" onClick={handleSubmit} onKeyDown={handleKeyDown}>Post</button>

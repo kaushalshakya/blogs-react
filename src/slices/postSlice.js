@@ -24,42 +24,37 @@ export const getPosts = createAsyncThunk('posts/getPosts', async () => {
     }
 })
 
-const addPosts = createAsyncThunk('posts/addPosts', async(payload, thunkAPI) => {
+export const addPosts = createAsyncThunk('posts/addPosts', async(payload, thunkAPI) => {
     try{
-        const response = await axios.post(API + 'posts', payload);
+        const token = thunkAPI.getState().auth.token;
+        console.log('payload', payload);
+        const response = await axios.post(API + 'posts', payload,
+        {
+            headers : {
+                Authorization: `Bearer ${token}`
+            }
+        });
         console.log(response.data);
         return response.data;
     }catch(err) {
-        return thunkAPI.rejectWithValue(response.data);
+        return thunkAPI.rejectWithValue(err.response ? err.response.data : err.message);
     }
 })
 
 const initialState = {
     posts: [],
     status: 'idle',
-    error: null
+    error: null,
+    success: null
 }
 
 const postSlice = createSlice (
     {
         name: 'posts',
         initialState,
-        reducers : {
-            postAdded : {
-                reducer(state, action)  {
-                    state.posts.push(action.payload);
-                },
-                prepare(id, title, content, image) {
-                    return {
-                        payload : {
-                            id,
-                            title,
-                            content,
-                            date,
-                            image
-                        }
-                    }
-                }
+        reducers: {
+            resetSuccess : (state, action) => {
+                state.success = null;
             }
         },
         extraReducers: (builder) => {
@@ -76,6 +71,16 @@ const postSlice = createSlice (
                     state.status = 'error';
                     state.error = action.error.message;
                 })
+                .addCase(addPosts.fulfilled, (state, action) => {
+                    state.status = 'succeeded';
+                    state.success = action.payload;
+                    console.log('state.posts', state.posts);
+                    // state.posts.push(action.payload);
+                })
+                .addCase(addPosts.rejected, (state, action) => {
+                    state.status = 'rejected';
+                    state.error = action.error.message
+                })
         }
     }
 )
@@ -83,7 +88,8 @@ const postSlice = createSlice (
 export const allPosts = (state) => state.posts.posts;
 export const postStatus = (state) => state.posts.status;
 export const postError = (state) => state.posts.error;
+export const postSuccess = (state) => state.posts.success;
 
-export const { postAdded } = postSlice.actions;
+export const { resetSuccess } = postSlice.actions;
 
 export default postSlice.reducer;
