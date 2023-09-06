@@ -81,17 +81,16 @@ const RegisterForm = () => {
                 theme: "dark",
             })
         }
+        
+        const formData = new FormData();
+        formData.append('first_name', firstName);
+        formData.append('last_name', lastName);
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('confirmPassword', confirmPassword);
+        formData.append('image', image);
 
-        const payload = {
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            password: password,
-            confirmPassword: confirmPassword,
-            image: image
-        }
-
-        dispatch(registerThunk(payload));
+        dispatch(registerThunk(formData));
     }
 
     const handleKeyDown = (e) => {
@@ -144,7 +143,7 @@ const RegisterForm = () => {
                         <label className="label">
                             <span className="label-text">Profile Image:</span>
                         </label>
-                        <input type="file" onChange={(e) => setImage(e.target.value)} className="file-input w-full max-w-xs" />
+                        <input type="file" onChange={(e) => setImage(e.target.files[0])} className="file-input w-full max-w-xs" />
                         <label className="label">
                             <p className="label-text-alt">
                                 Already have an account? Click <span className='link link-hover'><Link to={'/login'}>here</Link></span> to login

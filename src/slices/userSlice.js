@@ -5,7 +5,11 @@ const API = import.meta.env.VITE_API_URL;
 
 export const registerThunk = createAsyncThunk('users/registerThunk', async(payload, thunkAPI) => {
     try{
-        const response = await axios.post(API + 'register', payload);
+        const response = await axios.post(API + 'register', payload, {
+            headers : {
+                'Content-Type' : 'multipart/form-data'
+            }
+        });
         console.log(response.data);
         return response.data;
     }catch(err) {
