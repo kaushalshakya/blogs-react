@@ -31,7 +31,8 @@ export const addPosts = createAsyncThunk('posts/addPosts', async(payload, thunkA
         const response = await axios.post(API + 'posts', payload,
         {
             headers : {
-                Authorization: `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'Content-Type' : 'multipart/form-data'
             }
         });
         console.log(response.data);

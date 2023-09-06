@@ -29,15 +29,13 @@ const AddPost = () => {
                 progress: undefined,
                 theme: "dark",
             })
-        } 
+        }     
+        const formData = new FormData();
+        formData.append('post_title', title);
+        formData.append('post_content', content);
+        formData.append('post_image', image);
 
-        const payload = {
-            post_title: title,
-            post_content: content,
-            post_image: image
-        }
-
-        dispatch(addPosts(payload));
+        dispatch(addPosts(formData));
     }
 
     useEffect(() => {
