@@ -4,12 +4,10 @@ import {
     postStatus, 
     postError, 
     getPosts, 
-    postSuccess,
 } from "../../slices/postSlice";
 import React from 'react'
 import { useEffect } from "react";
 import Loader from "../Loader";
-import { getUser } from "../../slices/authSlice";
 import { Link } from "react-router-dom";
 
 const ViewPosts = () => {
@@ -17,10 +15,6 @@ const ViewPosts = () => {
     const posts = useSelector(allPosts);
     const status = useSelector(postStatus);
     const error = useSelector(postError);
-    const user = useSelector(getUser);
-    const success = useSelector(postSuccess);
-
-    console.log('success', success );
 
     useEffect(() => {
       dispatch(getPosts());
@@ -43,9 +37,6 @@ const ViewPosts = () => {
                 {post.post_title}
               </h2>
               <p>{post.post_content}</p>
-              {user && user.id === post.user_id && <div className="flex items-end">
-                <button type = 'button' onClick = {() => handleDelete(post.id)} className="btn w-[90px] h-7 ml-[53rem] btn-error">Delete</button>
-              </div>}
               <div className="card-actions justify-end">
                 <div className="badge badge-outline p-2">{post.first_name} {post.last_name}</div>
               </div>

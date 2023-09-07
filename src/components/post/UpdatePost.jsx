@@ -18,7 +18,8 @@ const UpdatePost = () => {
     const navigate = useNavigate()
 
     const [confirmDelete, setConfirmDelete] = useState(false);
-    const [deleteId, setDeleteId] = useState(null);
+    const [postId, setPostId] = useState(null);
+
     const success = useSelector(postSuccess);
 
     console.log('success', success );
@@ -42,20 +43,22 @@ const UpdatePost = () => {
       }
     }, [success, dispatch])
 
-    const handleDelete = (id) => {
+    const handleDelete = (postId) => {
       setConfirmDelete(true);
-      setDeleteId(id);
+      setPostId(postId);
+      console.log('postId', postId);
     }
 
     const deleteConfirm = () => {
-      dispatch(deletePost(deleteId));
-      setConfirmDelete(false);
-      setDeleteId(null);
+        console.log(postId);
+        dispatch(deletePost(postId));
+        setConfirmDelete(false);
+        setPostId(null);
     }
 
     const cancelDelete = () => {
       setConfirmDelete(false);
-      setDeleteId(null);
+      setPostId(null);
     }
 
     useEffect(() => {
@@ -71,12 +74,12 @@ const UpdatePost = () => {
     <>
     <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col">
+            <h1 className="text-5xl font-bold">{post[0].post_title}</h1>
             {post[0].post_image && <img src={post[0].post_image} className="max-w-[1000px] rounded-lg shadow-2xl" />}
-            <div>
-                <h1 className="text-5xl font-bold">{post[0].post_title}</h1>
-                <p className="py-6">{post[0].post_content}</p>
-                {user && (user.id === post[0].user_id) && <button type = 'button' className="btn btn-primary">Update </button>}
-                {user && (user.id === post[0].user_id) && <button type = 'button' onClick={() => handleDelete(post[0].id)} className="btn btn-error">Delete </button>}
+            <p className="py-6">{post[0].post_content}</p>
+            <div className='flex gap-5'>
+                {user && (user.id === post[0].user_id) && <button type = 'button' className="btn btn-primary">Update</button>}
+                {user && (user.id === post[0].user_id) && <button type = 'button' onClick={() => handleDelete(post[0].id)} className="btn btn-error">Delete</button>}
             </div>
         </div>
       <ToastContainer />
