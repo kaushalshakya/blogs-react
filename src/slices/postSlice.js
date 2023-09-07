@@ -8,15 +8,11 @@ const IMAGE = import.meta.env.VITE_IMAGE_URL;
 export const getPosts = createAsyncThunk('posts/getPosts', async () => {
     try{
         const response = await axios.get(API + 'home');
-        console.log('img', response.data.response);
 
         response.data.response.forEach(post => {
             post.post_image = post.post_image ? IMAGE + 'post-img/' + post.post_image : null;
             post.image = post.image ? IMAGE + 'profile-img/' + post.image : null;
         });
-
-        console.log('test', response.data.response);
-        console.log('resposne data', response.data);
 
         return response.data;
     }catch (err) {
@@ -27,7 +23,6 @@ export const getPosts = createAsyncThunk('posts/getPosts', async () => {
 export const addPosts = createAsyncThunk('posts/addPosts', async(payload, thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.token;
-        console.log('payload', payload);
         const response = await axios.post(API + 'posts', payload,
         {
             headers : {
@@ -35,9 +30,23 @@ export const addPosts = createAsyncThunk('posts/addPosts', async(payload, thunkA
                 'Content-Type' : 'multipart/form-data'
             }
         });
-        console.log(response.data);
         return response.data;
     }catch(err) {
+        return thunkAPI.rejectWithValue(err.response ? err.response.data : err.message);
+    }
+})
+
+export const deletePost = createAsyncThunk('posts/deletePosts', async(id, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.token;
+        const response = await axios.delete(API + 'posts/' + id, {
+            headers : {
+                'Authorization' : `Bearer ${token}`
+            }
+        })
+        return response.data;
+    }catch (err) {
+        (err);
         return thunkAPI.rejectWithValue(err.response ? err.response.data : err.message);
     }
 })
@@ -68,19 +77,24 @@ const postSlice = createSlice (
                     state.posts = action.payload;
                 })
                 .addCase(getPosts.rejected, (state, action) => {
-                    console.log(action);
                     state.status = 'error';
                     state.error = action.error.message;
                 })
                 .addCase(addPosts.fulfilled, (state, action) => {
                     state.status = 'succeeded';
                     state.success = action.payload;
-                    console.log('state.success', state.success);
-                    // state.posts.push(action.payload);
                 })
                 .addCase(addPosts.rejected, (state, action) => {
                     state.status = 'rejected';
                     state.error = action.error.message
+                })
+                .addCase(deletePost.fulfilled, (state, action) => {
+                    state.status = 'succeeded';
+                    state.success = action.payload;
+                })
+                .addCase(deletePost.rejected, (state, action) => {
+                    state.status = 'rejected';
+                    state.error = action.error.message;
                 })
         }
     }
