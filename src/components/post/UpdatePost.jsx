@@ -7,7 +7,7 @@ import {
     resetSuccess,
     deletePost,
     postSuccess,
- } from '../../slices/postSlice';
+} from '../../slices/postSlice';
 import { getUser } from '../../slices/authSlice';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
