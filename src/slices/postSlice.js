@@ -51,6 +51,22 @@ export const deletePost = createAsyncThunk('posts/deletePosts', async(id, thunkA
     }
 })
 
+export const updatePost = createAsyncThunk('posts/updatePost', async(id, payload, thunkAPI) => {
+    try{
+        const token = thunkAPI.getState().auth.token;
+        console.log('state', thunkAPI.getState());
+        const response = await axios.put(API + 'posts/' + id, payload, {
+            headers : {
+                'Authorization' : `Bearer ${token}`
+            }
+        })
+        return response.data;
+    }catch(err) {
+        console.log(err)
+        return thunkAPI.rejectWithValue(err.message);
+    }
+})
+
 const initialState = {
     posts: [],
     status: 'idle',
@@ -93,6 +109,14 @@ const postSlice = createSlice (
                     state.success = action.payload;
                 })
                 .addCase(deletePost.rejected, (state, action) => {
+                    state.status = 'rejected';
+                    state.error = action.error.message;
+                })
+                .addCase(updatePost.fulfilled, (state, action) => {
+                    state.status = 'succeeded';
+                    state.success = action.payload;
+                })
+                .addCase(updatePost.rejected, (state, action) => {
                     state.status = 'rejected';
                     state.error = action.error.message;
                 })

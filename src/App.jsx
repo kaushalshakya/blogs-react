@@ -4,6 +4,7 @@ import LoginForm from './components/auth/LoginForm';
 import Navbar from './components/Navbar';
 import RegisterForm from './components/auth/RegisterForm';
 import AddPost from './components/post/AddPost';
+import UpdatePost from './components/post/UpdatePost';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
           <Route path="/" element={<ViewPosts />} />
           <Route path='/register' element = {<RegisterForm />} />
           <Route path='/post' element = {<AddPost />} />
+          <Route path='/:id' element = {<UpdatePost />} />
         </Routes>
       </Router>
     </div>
@@ -24,7 +26,6 @@ export default function App() {
 function ConditionalNavbar() {
   let location = useLocation();
   
-  // Do not show the Navbar when the path is '/login' or '/register'
   if (location.pathname === '/login' || location.pathname === '/register') {
     return null;
   }

@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import Loader from "../Loader";
 import { getUser } from "../../slices/authSlice";
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from "react-router-dom";
 
 const ViewPosts = () => {
     const dispatch = useDispatch();
@@ -81,6 +82,7 @@ const ViewPosts = () => {
                 {post.post_title}
               </h2>
               <p>{post.post_content}</p>
+              <Link to = {`/${post.id}`}><button type = 'button' className="btn w-[90px] h-7 ml-[53rem] btn-primary">Update</button></Link>
               {user && user.id === post.user_id && <div className="flex items-end">
                 <button type = 'button' onClick = {() => handleDelete(post.id)} className="btn w-[90px] h-7 ml-[53rem] btn-error">Delete</button>
               </div>}
@@ -95,7 +97,7 @@ const ViewPosts = () => {
             <div className="max-w-md">
               <h1 className="text-5xl font-bold">Hello there</h1>
               <p className="py-6">There are currently no posts. Be the first poster by signing up!</p>
-              <Link><button className="btn btn-primary">Sign Up</button></Link>
+              <Link to={'/register'}><button className="btn btn-primary">Sign Up</button></Link>
             </div>
           </div>
         </div>
