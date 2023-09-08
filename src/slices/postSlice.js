@@ -51,13 +51,15 @@ export const deletePost = createAsyncThunk('posts/deletePosts', async(id, thunkA
     }
 })
 
-export const updatePost = createAsyncThunk('posts/updatePost', async(id, payload, thunkAPI) => {
+export const updatePost = createAsyncThunk('posts/updatePost', async({id, payload}, thunkAPI) => {
     try{
         const token = thunkAPI.getState().auth.token;
-        console.log('state', thunkAPI.getState());
+        console.log('id', id);
+        console.log('payload', payload);
         const response = await axios.put(API + 'posts/' + id, payload, {
             headers : {
-                'Authorization' : `Bearer ${token}`
+                'Authorization' : `Bearer ${token}`,
+                'Content-Type' : 'multipart/form-data'
             }
         })
         return response.data;
