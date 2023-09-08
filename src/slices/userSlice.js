@@ -17,6 +17,21 @@ export const registerThunk = createAsyncThunk('users/registerThunk', async(paylo
     }
 })
 
+export const getProfile = createAsyncThunk('users/getProfile', async(_, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.token;
+        const response = await axios.get(API + 'profile', {
+            headers : {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+
+        return response.data.posts;
+    }catch (err) {
+        return console.log(err);
+    }
+})
+
 const initialState = {
     status: 'idle',
     error: null,
@@ -41,6 +56,10 @@ const userSlice = createSlice(
                 .addCase(registerThunk.rejected, (state, action) => {
                     state.status = 'rejected';
                     state.error = action.payload;
+                })
+                .addCase(getProfile.fulfilled, (state, action) => {
+                    state.status = 'succeeded';
+                    state.success = action.payload;
                 })
         }
     }
