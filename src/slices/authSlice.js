@@ -55,9 +55,7 @@ const authSlice = createSlice(
                 .addCase(loginThunk.rejected, (state, action) => {
                     state.status = 'rejected';
                     const error = action.payload || 'Unknown error';
-                    // console.log('err', error);
                     state.error = error; 
-                    // console.log('state-err', state.error);
                 })
                 .addCase(logoutThunk.fulfilled, (state, action) => {
                     state.status = 'succeeded';
@@ -69,7 +67,7 @@ const authSlice = createSlice(
                 .addCase(logoutThunk.rejected, (state, action) => {
                     state.status = 'rejected';
                     const error = action.payload || 'Unknown error';
-                    state.error = error
+                    state.error = error;
                 })
         }
     }

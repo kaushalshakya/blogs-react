@@ -40,7 +40,7 @@ const LoginForm = () => {
         if(success) {
             toast.success(success.message, {
                 position: "top-right",
-                autoClose: 2000,
+                autoClose: 200,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -51,7 +51,7 @@ const LoginForm = () => {
 
             setTimeout(() => {
                 navigate('/');
-            }, 2000);
+            }, 250);
         }
     }, [success, dispatch]);
     
